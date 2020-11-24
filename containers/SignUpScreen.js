@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import {
   Button,
   Text,
@@ -10,30 +11,70 @@ import {
 } from "react-native";
 import Constants from "expo-constants";
 import { useNavigation } from "@react-navigation/core";
-
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 // console.log(Constants.statusBarHeight);
 export default function SignUpScreen({ setToken }) {
   const navigation = useNavigation();
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [description, setDescription] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const whenSubmit = () => {
+    if (password !== confirmPassword) {
+      alert("Vos mots de passe ne sont pas identique");
+    } else if (
+      !email ||
+      !username ||
+      !description ||
+      !password ||
+      !confirmPassword
+    ) {
+      alert("Merci de remplirs correctement tous les champs");
+    } else {
+      const sendSignup = axios.post(
+        "https://express-airbnb-api.herokuapp.com/user/sign_up",
+        {
+          "Content-Type": "application/json",
+        },
+        {
+          email: email,
+          username: username,
+          description: description,
+          password: password,
+          confirmPassword: confirmPassword,
+        }
+      );
+    }
+  };
   return (
     <KeyboardAwareScrollView style={styles.bar}>
       <View style={styles.container}>
         <View style={styles.form}>
-          <Image
-            style={styles.logo}
-            source={require("../assets/airbnblogo.jpg")}
-          ></Image>
+          <View style={styles.centerImg}>
+            <Image
+              style={styles.logo}
+              source={require("../assets/airbnblogo.jpg")}
+            ></Image>
+          </View>
           <Text style={styles.h1}>Sign Up</Text>
           <TextInput
             style={styles.lignBottomInput}
             placeholder="Email"
             autoCompleteType={"email"}
+            onChange={(text) => {
+              setEmail(text);
+            }}
           />
 
           <TextInput
             style={styles.lignBottomInput}
             placeholder="Username"
             autoCompleteType={"username"}
+            onChangeText={(text) => {
+              setUsername(text);
+            }}
           />
 
           <TextInput
@@ -41,16 +82,25 @@ export default function SignUpScreen({ setToken }) {
             placeholder="Describe yourself in a few words ...."
             multiline={true}
             numberOfLines={4}
-          ></TextInput>
+            onChange={(text) => {
+              setDescription(text);
+            }}
+          />
           <TextInput
             style={styles.lignBottomInput}
             placeholder="Password"
             secureTextEntry={true}
+            onChange={(text) => {
+              setPassword(text);
+            }}
           />
           <TextInput
             style={styles.lignBottomInput}
             placeholder="Confirm Password"
             secureTextEntry={true}
+            onChange={(text) => {
+              setConfirmPassword(text);
+            }}
           />
           <TouchableOpacity
             style={styles.buttonSignUp}
@@ -106,7 +156,11 @@ const styles = StyleSheet.create({
   },
 
   // FORM
-  form: {},
+  centerImg: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20,
+  },
   logo: {
     width: 100,
     height: 100,
@@ -126,6 +180,8 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     marginLeft: 25,
     marginRight: 25,
+    marginBottom: 20,
+    marginTop: 20,
   },
 
   signin: {
