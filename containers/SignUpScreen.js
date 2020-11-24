@@ -21,9 +21,9 @@ export default function SignUpScreen({ setToken }) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const whenSubmit = () => {
+  const whenSubmit = async () => {
     if (password !== confirmPassword) {
-      alert("Vos mots de passe ne sont pas identique");
+      return alert("Vos mots de passe ne sont pas identique");
     } else if (
       !email ||
       !username ||
@@ -31,13 +31,14 @@ export default function SignUpScreen({ setToken }) {
       !password ||
       !confirmPassword
     ) {
-      alert("Merci de remplirs correctement tous les champs");
+      return alert("Merci de remplirs correctement tous les champs");
     } else {
-      const sendSignup = axios.post(
+      const sendSignup = await axios.post(
         "https://express-airbnb-api.herokuapp.com/user/sign_up",
         {
           "Content-Type": "application/json",
         },
+
         {
           email: email,
           username: username,
@@ -46,6 +47,15 @@ export default function SignUpScreen({ setToken }) {
           confirmPassword: confirmPassword,
         }
       );
+
+      if (sendSignup) {
+        alert("Votre compte a bien été enregistrer !!!");
+        console.log(sendSignup);
+      } else {
+        alert(
+          "Votre adresse Email ou votre pseudo existe déja merci de réintéré votre demande avec autre chose"
+        );
+      }
     }
   };
   return (
@@ -105,10 +115,7 @@ export default function SignUpScreen({ setToken }) {
           <TouchableOpacity
             style={styles.buttonSignUp}
             title="Sign up"
-            onPress={async () => {
-              const userToken = "secret-token";
-              setToken(userToken);
-            }}
+            onPress={whenSubmit}
           >
             <Text style={[styles.center, styles.h3]}>Sign Up</Text>
           </TouchableOpacity>
@@ -138,6 +145,15 @@ const styles = StyleSheet.create({
     marginTop: Constants.statusBarHeight,
   },
 
+  centerImg: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  logo: {
+    width: 100,
+    height: 100,
+  },
   // TITRE
 
   h1: {
@@ -156,15 +172,7 @@ const styles = StyleSheet.create({
   },
 
   // FORM
-  centerImg: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  logo: {
-    width: 100,
-    height: 100,
-  },
+
   lignBottomInput: {
     borderBottomWidth: 2,
     borderBottomColor: "red",
