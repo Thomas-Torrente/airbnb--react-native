@@ -1,6 +1,7 @@
 // les imports
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/core";
+import axios from "axios";
 import {
   Button,
   Text,
@@ -16,8 +17,32 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 
 export default function SignInScreen({ setToken }) {
   const navigation = useNavigation();
-  const [Email, setEmail] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const whenSubmit = async () => {
+    if (!email || !password) {
+      return alert("Merci de remplir correctement tous les champs");
+    } else {
+      const sendSignIn = await axios.post(
+        "https://express-airbnb-api.herokuapp.com/user/log_in",
+        {
+          headers: { "Content-Type": "application/json" },
+        },
+        {
+          email: email,
+          password: password,
+        }
+      );
+      if (sendSignIn) {
+        alert("Vous êtes bien connecter");
+      } else {
+        alert(
+          "votre email ou votre mot de passe est inccorect ou n'existe pas"
+        );
+      }
+    }
+  };
 
   return (
     <KeyboardAwareScrollView style={styles.bar}>
@@ -52,7 +77,8 @@ export default function SignInScreen({ setToken }) {
           <TouchableOpacity
             style={styles.buttonSignUp}
             title="Sign in"
-            onPress={async () => {
+            onPress={whenSubmit}
+            onPress={() => {
               const userToken = "secret-token";
               setToken(userToken);
             }}

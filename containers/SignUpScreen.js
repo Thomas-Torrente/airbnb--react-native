@@ -36,7 +36,7 @@ export default function SignUpScreen({ setToken }) {
       const sendSignup = await axios.post(
         "https://express-airbnb-api.herokuapp.com/user/sign_up",
         {
-          "Content-Type": "application/json",
+          headers: { "Content-Type": "application/json" },
         },
 
         {
