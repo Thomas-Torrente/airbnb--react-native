@@ -20,42 +20,43 @@ export default function SignUpScreen({ setToken }) {
   const [description, setDescription] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null);
+  // de base error message est nul prck ya pas derreur mais :
 
   const whenSubmit = async () => {
-    if (password !== confirmPassword) {
-      return alert("Vos mots de passe ne sont pas identique");
-    } else if (
-      !email ||
-      !username ||
-      !description ||
-      !password ||
-      !confirmPassword
-    ) {
-      return alert("Merci de remplirs correctement tous les champs");
-    } else {
-      const sendSignup = await axios.post(
-        "https://express-airbnb-api.herokuapp.com/user/sign_up",
-        {
-          headers: { "Content-Type": "application/json" },
-        },
+    if (email && username && description && password && confirmPassword) {
+      // console.log("première étape vérifier");
+      if (password === confirmPassword) {
+        // console.log(
+        //   "Les mot de passes sont bien identiques on passe a la suite"
+        // );
 
-        {
-          email: email,
-          username: username,
-          description: description,
-          password: password,
-          confirmPassword: confirmPassword,
+        try {
+          const sendSignup = await axios.post(
+            "https://express-airbnb-api.herokuapp.com/user/sign_up",
+            {
+              email: email,
+              username: username,
+              description: description,
+              password: password,
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          console.log(sendSignup);
+        } catch (error) {
+          alert("error");
         }
-      );
-
-      if (sendSignup) {
-        alert("Votre compte a bien été enregistrer !!!");
-        console.log(sendSignup);
       } else {
-        alert(
-          "Votre adresse Email ou votre pseudo existe déja merci de réintéré votre demande avec autre chose"
-        );
+        setErrorMessage("Les mots de passe ne pas identiques");
       }
+    } else {
+      setErrorMessage(
+        "Merci de vérifier que tous les champs soit correctement remplies"
+      );
     }
   };
   return (
@@ -112,6 +113,8 @@ export default function SignUpScreen({ setToken }) {
               setConfirmPassword(text);
             }}
           />
+          <Text>{errorMessage}</Text>
+
           <TouchableOpacity
             style={styles.buttonSignUp}
             title="Sign up"
