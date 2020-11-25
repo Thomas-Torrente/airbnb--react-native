@@ -10,6 +10,8 @@ import SignInScreen from "./containers/SignInScreen";
 import SignUpScreen from "./containers/SignUpScreen";
 import SettingsScreen from "./containers/SettingsScreen";
 
+import CardRooms from "./components/CardRooms";
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
