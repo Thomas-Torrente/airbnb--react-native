@@ -13,7 +13,7 @@ import Constants from "expo-constants";
 import { useNavigation } from "@react-navigation/core";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 // console.log(Constants.statusBarHeight);
-export default function SignUpScreen({ setToken }) {
+export default function SignUpScreen() {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -46,10 +46,16 @@ export default function SignUpScreen({ setToken }) {
               },
             }
           );
-          console.log(sendSignup);
+          if (response.data.token) {
+            console.log("Compte enregistré");
+          } else {
+            alert("An erreur");
+          }
         } catch (error) {
-          alert(error.message);
-          console.log(error.message);
+          // alert(error.response.data);
+          // console.log(error.response);
+          setErrorMessage(error.response.data.error);
+          // Une erreur qui dit que le mail est déja connecter a un mail ca été fait dans le backend
         }
       } else {
         setErrorMessage("Les mots de passe ne pas identiques");
@@ -74,8 +80,10 @@ export default function SignUpScreen({ setToken }) {
           <TextInput
             style={styles.lignBottomInput}
             placeholder="Email"
-            autoCompleteType={"email"}
-            onChange={(text) => {
+            // autoCompleteType={"email"}
+            value={email}
+            onChangeText={(text) => {
+              // console.log(text);
               setEmail(text);
             }}
           />
@@ -83,8 +91,10 @@ export default function SignUpScreen({ setToken }) {
           <TextInput
             style={styles.lignBottomInput}
             placeholder="Username"
-            autoCompleteType={"username"}
+            // autoCompleteType={"username"}
+            value={username}
             onChangeText={(text) => {
+              // console.log(text);
               setUsername(text);
             }}
           />
@@ -94,7 +104,9 @@ export default function SignUpScreen({ setToken }) {
             placeholder="Describe yourself in a few words ...."
             multiline={true}
             numberOfLines={4}
-            onChange={(text) => {
+            value={description}
+            onChangeText={(text) => {
+              // console.log(text);
               setDescription(text);
             }}
           />
@@ -102,7 +114,9 @@ export default function SignUpScreen({ setToken }) {
             style={styles.lignBottomInput}
             placeholder="Password"
             secureTextEntry={true}
-            onChange={(text) => {
+            value={password}
+            onChangeText={(text) => {
+              // console.log(text);
               setPassword(text);
             }}
           />
@@ -110,7 +124,9 @@ export default function SignUpScreen({ setToken }) {
             style={styles.lignBottomInput}
             placeholder="Confirm Password"
             secureTextEntry={true}
-            onChange={(text) => {
+            value={confirmPassword}
+            onChangeText={(text) => {
+              // console.log(text);
               setConfirmPassword(text);
             }}
           />

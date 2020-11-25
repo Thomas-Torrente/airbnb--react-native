@@ -19,28 +19,34 @@ export default function SignInScreen({ setToken }) {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const whenSubmit = async () => {
-    if (!email || !password) {
-      return alert("Merci de remplir correctement tous les champs");
-    } else {
-      const sendSignIn = await axios.post(
-        "https://express-airbnb-api.herokuapp.com/user/log_in",
-        {
-          headers: { "Content-Type": "application/json" },
-        },
-        {
-          email: email,
-          password: password,
-        }
-      );
-      if (sendSignIn) {
-        alert("Vous êtes bien connecter");
-      } else {
-        alert(
-          "votre email ou votre mot de passe est inccorect ou n'existe pas"
+    if (email && password) {
+      // console.log("Les champs sont bien remplies");
+      try {
+        const sendSignup = await axios.post(
+          "https://express-airbnb-api.herokuapp.com/user/log_in",
+          {
+            email: email,
+            password: password,
+          },
+          {
+            headers: { "Content-Type": "application/json" },
+          }
         );
+        if (response.data.token) {
+          // Stocker Token
+          const userToken = response.data.token;
+          setToken(userToken);
+        } else {
+          alert("Error");
+        }
+      } catch (error) {
+        setErrorMessage(error.response.data.error);
       }
+    } else {
+      setErrorMessage("Merci de remplir tous les champs correctement");
     }
   };
 
@@ -60,7 +66,8 @@ export default function SignInScreen({ setToken }) {
             style={styles.lignBottomInput}
             placeholder="Email"
             autoCompleteType={"email"}
-            onChange={(text) => {
+            value={email}
+            onChangeText={(text) => {
               setEmail(text);
             }}
           />
@@ -70,18 +77,20 @@ export default function SignInScreen({ setToken }) {
             placeholder="Password"
             secureTextEntry={true}
             autoCompleteType={"password"}
-            onChange={(text) => {
+            value={password}
+            onChangeText={(text) => {
               setPassword(text);
             }}
           />
+          <Text>{errorMessage}</Text>
           <TouchableOpacity
             style={styles.buttonSignUp}
             title="Sign in"
             onPress={whenSubmit}
-            onPress={() => {
-              const userToken = "secret-token";
-              setToken(userToken);
-            }}
+            // onPress={() => {
+            //   const userToken = "secret-token";
+            //   setToken(userToken);
+            // }}
           >
             <Text style={[styles.center, styles.h3]}>SIGN IN</Text>
           </TouchableOpacity>
