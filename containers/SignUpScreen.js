@@ -46,7 +46,7 @@ export default function SignUpScreen({ setToken }) {
               },
             }
           );
-          console.log(sendSignup.data);
+          console.log(sendSignup);
         } catch (error) {
           alert(error.message);
           console.log(error.message);
