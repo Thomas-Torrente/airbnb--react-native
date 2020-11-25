@@ -25,7 +25,7 @@ export default function SignInScreen({ setToken }) {
     if (email && password) {
       // console.log("Les champs sont bien remplies");
       try {
-        const sendSignup = await axios.post(
+        const response = await axios.post(
           "https://express-airbnb-api.herokuapp.com/user/log_in",
           {
             email: email,

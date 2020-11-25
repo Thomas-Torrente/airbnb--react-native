@@ -13,7 +13,7 @@ import Constants from "expo-constants";
 import { useNavigation } from "@react-navigation/core";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 // console.log(Constants.statusBarHeight);
-export default function SignUpScreen() {
+export default function SignUpScreen({ setToken }) {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -32,7 +32,7 @@ export default function SignUpScreen() {
         // );
 
         try {
-          const sendSignup = await axios.post(
+          const response = await axios.post(
             "https://express-airbnb-api.herokuapp.com/user/sign_up",
             {
               email: email,
@@ -48,6 +48,8 @@ export default function SignUpScreen() {
           );
           if (response.data.token) {
             console.log("Compte enregistré");
+            const userToken = response.data.token;
+            setToken(userToken);
           } else {
             alert("An erreur");
           }
