@@ -46,9 +46,10 @@ export default function SignUpScreen({ setToken }) {
               },
             }
           );
-          console.log(sendSignup);
+          console.log(sendSignup.data);
         } catch (error) {
-          alert("error");
+          alert(error.message);
+          console.log(error.message);
         }
       } else {
         setErrorMessage("Les mots de passe ne pas identiques");
