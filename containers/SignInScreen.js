@@ -39,6 +39,7 @@ export default function SignInScreen({ setToken }) {
           // Stocker Token
           const userToken = response.data.token;
           setToken(userToken);
+          navigation.navigate("Home");
         } else {
           alert("Error");
         }

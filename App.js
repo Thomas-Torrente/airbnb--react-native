@@ -12,6 +12,7 @@ import SignInScreen from "./containers/SignInScreen";
 import SignUpScreen from "./containers/SignUpScreen";
 import SettingsScreen from "./containers/SettingsScreen";
 import RoomScreen from "./containers/RoomScreen";
+import AroundMeScreen from "./containers/AroundMeScreen";
 
 // Components
 import Logo from "./components/Logo.js";
@@ -76,6 +77,7 @@ export default function App() {
           }}
         >
           <Tab.Screen
+            //  Si dessous accueil
             name="Home"
             options={{
               tabBarLabel: "Home",
@@ -99,7 +101,8 @@ export default function App() {
                 <Stack.Screen
                   name="Room"
                   options={{
-                    title: "User Room",
+                    headerTitle: () => <Logo />,
+                    // permet d'ajouter dans le header le logo du components Logo pour l'afficher
                   }}
                 >
                   {(props) => <RoomScreen {...props} />}
@@ -107,6 +110,31 @@ export default function App() {
               </Stack.Navigator>
             )}
           </Tab.Screen>
+
+          {/* ci dessous la map */}
+          <Tab.Screen
+            name="Around Me"
+            options={{
+              headerTitle: () => <Logo />,
+              // permet d'ajouter dans le header le logo du components Logo pour l'afficher
+              tabBarIcon: ({ color, size }) => (
+                <Ionicons name={"ios-pin"} size={size} color={color} />
+              ),
+            }}
+          >
+            {() => (
+              <Stack.Navigator>
+                <Stack.Screen
+                  name="Around Me"
+                  options={{ title: "Around Me", tabBarLabel: "Around Me" }}
+                >
+                  {() => <AroundMeScreen setToken={setToken} />}
+                </Stack.Screen>
+              </Stack.Navigator>
+            )}
+          </Tab.Screen>
+
+          {/* ci dessous settings */}
           <Tab.Screen
             name="Settings"
             options={{
