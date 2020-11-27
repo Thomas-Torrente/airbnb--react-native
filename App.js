@@ -10,7 +10,7 @@ import HomeScreen from "./containers/HomeScreen";
 import ProfileScreen from "./containers/ProfileScreen";
 import SignInScreen from "./containers/SignInScreen";
 import SignUpScreen from "./containers/SignUpScreen";
-import SettingsScreen from "./containers/SettingsScreen";
+import MyProfileScreen from "./containers/MyProfileScreen";
 import RoomScreen from "./containers/RoomScreen";
 import AroundMeScreen from "./containers/AroundMeScreen";
 
@@ -64,7 +64,7 @@ export default function App() {
             name="SignIn"
             options={{ header: () => null, animationEnabled: false }}
           >
-            {() => <SignInScreen />}
+            {() => <SignInScreen setToken={setToken} />}
           </Stack.Screen>
         </Stack.Navigator>
       ) : (
@@ -72,7 +72,7 @@ export default function App() {
 
         <Tab.Navigator
           tabBarOptions={{
-            activeTintColor: "tomato",
+            activeTintColor: "#FF5F62",
             inactiveTintColor: "gray",
           }}
         >
@@ -95,7 +95,7 @@ export default function App() {
                     // permet d'ajouter dans le header le logo du components Logo pour l'afficher
                   }}
                 >
-                  {(props) => <HomeScreen {...props} />}
+                  {(props) => <HomeScreen {...props} setToken={setToken} />}
                 </Stack.Screen>
 
                 <Stack.Screen
@@ -126,7 +126,7 @@ export default function App() {
               <Stack.Navigator>
                 <Stack.Screen
                   name="Around Me"
-                  options={{ title: "Around Me", tabBarLabel: "Around Me" }}
+                  options={{ headerTitle: () => <Logo /> }}
                 >
                   {() => <AroundMeScreen setToken={setToken} />}
                 </Stack.Screen>
@@ -134,23 +134,23 @@ export default function App() {
             )}
           </Tab.Screen>
 
-          {/* ci dessous settings */}
+          {/* ci dessous My profile */}
           <Tab.Screen
-            name="Settings"
+            name="My Profile"
             options={{
-              tabBarLabel: "Settings",
+              tabBarLabel: "My Profile",
               tabBarIcon: ({ color, size }) => (
-                <Ionicons name={"ios-options"} size={size} color={color} />
+                <Ionicons name={"ios-person"} size={size} color={color} />
               ),
             }}
           >
             {() => (
               <Stack.Navigator>
                 <Stack.Screen
-                  name="Settings"
-                  options={{ title: "Settings", tabBarLabel: "Settings" }}
+                  name="My Profile"
+                  options={{ headerTitle: () => <Logo /> }}
                 >
-                  {() => <SettingsScreen setToken={setToken} />}
+                  {() => <MyProfileScreen setToken={setToken} />}
                 </Stack.Screen>
               </Stack.Navigator>
             )}

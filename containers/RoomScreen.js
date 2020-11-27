@@ -10,12 +10,15 @@ import {
 } from "react-native";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/core";
+import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import { ScrollView } from "react-native-gesture-handler";
 
 export default function RoomScreen({ route }) {
   const navigation = useNavigation();
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [longitude, setLongitude] = useState();
+  const [latitude, setLatitude] = useState();
 
   const fetchData = async () => {
     const response = await axios.get(

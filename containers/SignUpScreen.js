@@ -50,6 +50,8 @@ export default function SignUpScreen({ setToken }) {
             console.log("Compte enregistré");
             const userToken = response.data.token;
             setToken(userToken);
+            navigation.navigate("HomeScreen");
+            alert("Votre compte a bien été enregistré");
           } else {
             alert("An erreur");
           }

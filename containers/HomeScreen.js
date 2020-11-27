@@ -13,7 +13,7 @@ import axios from "axios";
 import { FlatList } from "react-native";
 import { TouchableOpacity } from "react-native";
 
-export default function HomeScreen() {
+export default function HomeScreen({ setToken }) {
   const navigation = useNavigation();
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
